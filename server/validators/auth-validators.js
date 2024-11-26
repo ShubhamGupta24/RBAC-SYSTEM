@@ -13,6 +13,11 @@ const signupSchema = z.object({
         .email({ message: "Invalid email address" })
         .min(3, { message: "Email must be at least of 3 characters" })
         .max(255, { message: "Email must not be more than 255 characters" }),
+    role: z
+        .string({ required_error: "role is required" })
+        .trim()
+        .min(3, { message: "role must be at least of 3 characters" })
+        .max(255, { message: "role must not be more than 255 characters" }),
     phone: z
         .string({ required_error: "Phone is required" })
         .min(8, { message: "Phone must be of minimum 8 characters" })

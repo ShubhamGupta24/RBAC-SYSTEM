@@ -19,7 +19,8 @@ export const Login = () => {
     e.preventDefault();
     try {
 
-      const url = process.env.REACT_APP_BACKEND_CONNECT_API + "login"
+      const url = process.env.REACT_APP_BACKEND_CONNECT_API + "login";
+      console.log(url);
       const response = await axios.post(url, loginInput);
 
       if (response.status === 200) {
@@ -43,13 +44,16 @@ export const Login = () => {
   };
 
   const handleInput = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    // const name = e.target.name;
+    // const value = e.target.value;
 
-    setLoginInput({ ...loginInput, [name]: value });
+    setLoginInput({ ...loginInput, [e.target.name]: e.target.value });
   }
   return (
     <div className="box">
+      <pre>{
+        JSON.stringify(loginInput)
+      }</pre>
       <div className="welcome">
         <h1>WELCOME BACK <MdWavingHand /></h1>
         Back for more? Let's dive back into the world of endless shopping possibilities!

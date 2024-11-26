@@ -25,7 +25,7 @@ const home = async (req, res) => {
 // 6. Respond: ✅ Respond with "Registration Successful" or handle errors.
 const register = async (req, res) => {
     try {
-        const { username, email, phone, password,  location } = req.body;
+        const { username, email, phone, role, password, location } = req.body;
         console.log(req.body)
 
         // Checks the existence of user
@@ -34,7 +34,7 @@ const register = async (req, res) => {
             return res.status(400).json({ msg: "email already exists" });
         }
 
-        const userCreated = await User.create({ username, email, phone, password,  location });
+        const userCreated = await User.create({ username, email, phone, role, password, location });
 
         res.status(201).json({
             msg: "Registration Successful",
@@ -59,6 +59,7 @@ const login = async (req, res) => {
 
         const userExist = await User.findOne({ email });
 
+
         if (!userExist) {
             return res.status(400).json({ msg: "Invalid Credentials" });
         }
@@ -75,7 +76,7 @@ const login = async (req, res) => {
             res.status(401).json({ message: "Invalid email or Password" })
         }
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" })
+        res.status(500).json({ message: "Internal server error", error })
     }
 }
 
@@ -86,7 +87,7 @@ const user = async (req, res) => {
     try {
         // const userData = await User.find({});
         const userData = req.user;
-        console.log(userData);
+        console.log("user-controller",userData);
         // return res.status(200).json({ msg: "userData will be provided soon" });
         return res.status(200).json({ userData });
     } catch (error) {

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../storeToken/auth";
 import 'react-toastify/dist/ReactToastify.css';
 import { MdWavingHand } from "react-icons/md";
@@ -10,10 +9,12 @@ import './style.css'
 
 export const Register = () => {
     const { storeTokenInLS } = useAuth();
+
     const url = process.env.REACT_APP_BACKEND_CONNECT_API + "register"
     const [input, setInput] = useState({
         username: "",
         email: "",
+        role: "",
         phone: "",
         password: "",
         location: ""
@@ -25,7 +26,7 @@ export const Register = () => {
     const navigate = useNavigate();
     const IsValidate = () => {
         let isproceed = true;
-        if (!input.email || !input.location || !input.password || !input.username || !input.phone) {
+        if (!input.email || !input.location || !input.password || !input.username || !input.phone || !input.role) {
             isproceed = false;
             toast.warning("empty credentials are not entertained");
         }
@@ -38,11 +39,13 @@ export const Register = () => {
 
         if (IsValidate()) {
             try {
+                console.log(url);
+
                 const response = await axios.post(url, input);
 
                 if (response.status === 201) {
                     const responseData = await response.data;
-                    setInput({ username: "", email: "", phone: "", password: "", location: "" });
+                    setInput({ username: "", email: "", role: "", phone: "", password: "", location: "" });
                     toast.success("Registration Successful");
 
                     // Storing the jwtToken in local storage
@@ -86,6 +89,17 @@ export const Register = () => {
                         autoComplete='off'
                         onChange={handleChange}
                         value={input.email} />
+                </div>
+                <div className='input-field'>
+                    <label htmlFor="role">Role</label>
+                    <input className='input'
+                        type="text"
+                        placeholder='Enter role'
+                        id='role'
+                        name='role'
+                        autoComplete='off'
+                        onChange={handleChange}
+                        value={input.role} />
                 </div>
                 <div className='input-field'>
                     <label htmlFor="password">Password</label>
